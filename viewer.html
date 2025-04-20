@@ -2,53 +2,43 @@
 <html>
 <head>
     <title>Drive Website Viewer</title>
-    <style>
-        body { font-family: Arial, sans-serif; padding: 20px; }
-        .error { color: red; padding: 15px; border: 1px solid red; }
-        .loading { text-align: center; padding: 50px; }
-    </style>
-</head>
-<body>
-    <div id="content">
-        <div class="loading">कृपया प्रतीक्षा करें...</div>
-    </div>
-
     <script>
-        // Google Drive फोल्डर ID
-        const folderId = '11uhkoEuQG9m4nrM2W3Xbc3O_w4fs8DCP';
+        const FOLDER_ID = '11uhkoEuQG9m4nrM2W3Xbc3O_w4fs8DCP'; // अपना फोल्डर ID डालें
         
-        // प्रॉक्सी सर्वर URL (हमारा नया तरीका)
-        const proxyUrl = `https://gd-proxy.herokuapp.com/?folder=${folderId}`;
-        
-        // वेबसाइट लोड करें
         async function loadWebsite() {
             try {
-                const response = await fetch(proxyUrl);
-                if (!response.ok) throw new Error('सर्वर से प्रतिक्रिया नहीं मिली');
+                // 1. index.html का direct लिंक बनाएं
+                const indexUrl = `https://drive.google.com/uc?export=view&id=https://drive.google.com/file/d/11wuKq_9rlyy9NJ9VGDuaL4FBcGYtuvSn/view?usp=drivesdk`;
                 
+                // 2. HTML कंटेंट लोड करें
+                const response = await fetch(indexUrl);
                 const html = await response.text();
-                document.getElementById('content').innerHTML = html;
+                
+                // 3. पेज में इंजेक्ट करें
+                document.open();
+                document.write(html);
+                document.close();
             } catch (error) {
-                showError(`त्रुटि: ${error.message}`);
+                document.body.innerHTML = `
+                    <div style="padding:20px;color:red;">
+                        <h2>त्रुटि: ${error.message}</h2>
+                        <p>कृपया जांचें:</p>
+                        <ul>
+                            <li>index.html फाइल का ID सही है</li>
+                            <li>फाइल "Anyone with the link" पर सेट है</li>
+                            <li>फाइल का नाम index.html है</li>
+                        </ul>
+                    </div>
+                `;
             }
         }
         
-        function showError(message) {
-            document.getElementById('content').innerHTML = `
-                <div class="error">
-                    <h3>${message}</h3>
-                    <p>कृपया जांचें:</p>
-                    <ul>
-                        <li>फोल्डर में index.html फ़ाइल मौजूद है</li>
-                        <li>फोल्डर की शेयरिंग "Anyone with the link" पर सेट है</li>
-                        <li>आप इंटरनेट से कनेक्टेड हैं</li>
-                    </ul>
-                </div>
-            `;
-        }
-        
-        // पेज लोड होते ही चलाएं
         window.onload = loadWebsite;
     </script>
+</head>
+<body>
+    <div style="text-align:center;padding:50px;">
+        <h3>वेबसाइट लोड हो रही है...</h3>
+    </div>
 </body>
 </html>
