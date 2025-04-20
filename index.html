@@ -2,60 +2,32 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <title>DriveToWeb - आपकी ड्राइव वेबसाइट</title>
-    <style>
-        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
-        .container { background: #f5f5f5; padding: 20px; border-radius: 10px; }
-        button { background: #4285F4; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DriveToWeb - Google Drive वेबसाइट कन्वर्टर</title>
+    <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
     <div class="container">
-        <h1>DriveToWeb</h1>
-        <p>अपने Google Drive फोल्डर को लाइव वेबसाइट में बदलें</p>
+        <div class="header">
+            <h1>DriveToWeb</h1>
+            <p>अपने Google Drive फोल्डर को तुरंत वेबसाइट में बदलें</p>
+        </div>
         
-        <input type="text" id="driveUrl" placeholder="Google Drive फोल्डर URL डालें" style="width: 100%; padding: 10px; margin: 10px 0;">
-        <button onclick="generateLink()">वेबसाइट बनाएं</button>
+        <div class="converter-box">
+            <input type="text" id="driveUrl" placeholder="Google Drive फोल्डर URL यहाँ पेस्ट करें...">
+            <button onclick="generateLink()" class="btn-convert">वेबसाइट बनाएं</button>
+        </div>
         
-        <div id="result" style="margin-top: 20px; display: none;">
-            <h3>आपकी वेबसाइट तैयार है!</h3>
-            <input type="text" id="websiteLink" readonly style="width: 100%; padding: 8px;">
-            <button onclick="copyLink()">लिंक कॉपी करें</button>
-            <a id="visitLink" target="_blank"><button>वेबसाइट देखें</button></a>
+        <div class="result-box" id="resultSection">
+            <h3>आपकी वेबसाइट तैयार है! 🎉</h3>
+            <div class="link-box">
+                <input type="text" id="websiteLink" readonly>
+                <button onclick="copyLink()" class="btn-copy">कॉपी करें</button>
+            </div>
+            <a id="visitLink" target="_blank" class="btn-visit">वेबसाइट देखें</a>
         </div>
     </div>
 
-    <script>
-        function generateLink() {
-            const driveUrl = document.getElementById('driveUrl').value;
-            const folderId = extractFolderId(driveUrl);
-            
-            if (!folderId) {
-                alert("कृपया सही Google Drive फोल्डर URL डालें");
-                return;
-            }
-
-            // GitHub Pages URL के साथ कॉम्बिनेशन
-            const githubUrl = window.location.href.replace('index.html', '');
-            const websiteLink = `${githubUrl}viewer.html?folder=${folderId}`;
-            
-            document.getElementById('result').style.display = 'block';
-            document.getElementById('websiteLink').value = websiteLink;
-            document.getElementById('visitLink').href = websiteLink;
-        }
-
-        function extractFolderId(url) {
-            const regex = /\/folders\/([a-zA-Z0-9_-]+)/;
-            const match = url.match(regex);
-            return match ? match[1] : null;
-        }
-
-        function copyLink() {
-            const copyText = document.getElementById('websiteLink');
-            copyText.select();
-            document.execCommand('copy');
-            alert("लिंक कॉपी हो गया!");
-        }
-    </script>
+    <script src="assets/script.js"></script>
 </body>
 </html>
