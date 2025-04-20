@@ -1,44 +1,47 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Drive Website Viewer</title>
-    <script>
-        const FOLDER_ID = '11uhkoEuQG9m4nrM2W3Xbc3O_w4fs8DCP'; // अपना फोल्डर ID डालें
-        
-        async function loadWebsite() {
-            try {
-                // 1. index.html का direct लिंक बनाएं
-                const indexUrl = `https://drive.google.com/uc?export=view&id=https://drive.google.com/file/d/11wuKq_9rlyy9NJ9VGDuaL4FBcGYtuvSn/view?usp=drivesdk`;
-                
-                // 2. HTML कंटेंट लोड करें
-                const response = await fetch(indexUrl);
-                const html = await response.text();
-                
-                // 3. पेज में इंजेक्ट करें
-                document.open();
-                document.write(html);
-                document.close();
-            } catch (error) {
-                document.body.innerHTML = `
-                    <div style="padding:20px;color:red;">
-                        <h2>त्रुटि: ${error.message}</h2>
-                        <p>कृपया जांचें:</p>
-                        <ul>
-                            <li>index.html फाइल का ID सही है</li>
-                            <li>फाइल "Anyone with the link" पर सेट है</li>
-                            <li>फाइल का नाम index.html है</li>
-                        </ul>
-                    </div>
-                `;
-            }
+    <title>Drive Website</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
         }
-        
-        window.onload = loadWebsite;
-    </script>
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 24px;
+        }
+        iframe {
+            width: 100%;
+            height: 100vh;
+            border: none;
+        }
+    </style>
 </head>
 <body>
-    <div style="text-align:center;padding:50px;">
-        <h3>वेबसाइट लोड हो रही है...</h3>
+    <div id="content">
+        <div class="loading">वेबसाइट लोड हो रही है...</div>
     </div>
+
+    <script>
+        // URL से फोल्डर ID निकालें
+        const urlParams = new URLSearchParams(window.location.search);
+        const folderId = urlParams.get('folder');
+        
+        // एम्बेडेड व्यूर URL बनाएं
+        const embedUrl = `https://drive.google.com/embeddedfolderview?id=${folderId}#list`;
+        
+        // कंटेंट लोड करें
+        document.getElementById('content').innerHTML = `
+            <iframe src="${embedUrl}" 
+                    onload="document.querySelector('.loading').style.display='none'">
+            </iframe>
+        `;
+    </script>
 </body>
 </html>
