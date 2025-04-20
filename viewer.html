@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Drive Website</title>
+    <style>
+        iframe { width: 100%; height: 100vh; border: none; }
+        .loading { text-align: center; padding: 50px; }
+    </style>
+</head>
+<body>
+    <div id="content">
+        <div class="loading">लोड हो रहा है...</div>
+    </div>
+
+    <script>
+        // URL से फोल्डर ID निकालें
+        const urlParams = new URLSearchParams(window.location.search);
+        const folderId = urlParams.get('folder');
+        
+        // Google Drive एम्बेड URL बनाएं
+        const embedUrl = `https://drive.google.com/embeddedfolderview?id=${folderId}#list`;
+        
+        // कंटेंट लोड करें
+        document.getElementById('content').innerHTML = `
+            <iframe src="${embedUrl}" 
+                    onload="document.querySelector('.loading').style.display='none'">
+            </iframe>
+        `;
+    </script>
+</body>
+</html>
