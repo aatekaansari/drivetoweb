@@ -7,8 +7,8 @@
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
         }
         .loading {
@@ -24,24 +24,6 @@
     </style>
 </head>
 <body>
-    <div id="content">
-        <div class="loading">वेबसाइट लोड हो रही है...</div>
-    </div>
-
-    <script>
-        // URL से फोल्डर ID निकालें
-        const urlParams = new URLSearchParams(window.location.search);
-        const folderId = urlParams.get('folder');
-        
-        // एम्बेडेड व्यूर URL बनाएं
-        const embedUrl = `https://drive.google.com/embeddedfolderview?id=${folderId}#list`;
-        
-        // कंटेंट लोड करें
-        document.getElementById('content').innerHTML = `
-            <iframe src="${embedUrl}" 
-                    onload="document.querySelector('.loading').style.display='none'">
-            </iframe>
-        `;
-    </script>
+    <iframe src="https://drive.google.com/embeddedfolderview?id=1LxPSYtpAZLsuwKmu8NT3RSI7pASXyl6h#list"></iframe>
 </body>
 </html>
