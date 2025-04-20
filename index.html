@@ -1,33 +1,49 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DriveToWeb - Google Drive वेबसाइट कन्वर्टर</title>
-    <link rel="stylesheet" href="assets/style.css">
+    <title>DriveToWeb</title>
+    <style>
+        body {
+            background: linear-gradient(120deg, #f6d365, #fda085);
+            font-family: 'Poppins', sans-serif;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            background: #4285F4;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>DriveToWeb</h1>
-            <p>अपने Google Drive फोल्डर को तुरंत वेबसाइट में बदलें</p>
-        </div>
+        <h1>DriveToWeb</h1>
+        <p>अपने Google Drive फोल्डर को वेबसाइट में बदलें</p>
         
-        <div class="converter-box">
-            <input type="text" id="driveUrl" placeholder="Google Drive फोल्डर URL यहाँ पेस्ट करें...">
-            <button onclick="generateLink()" class="btn-convert">वेबसाइट बनाएं</button>
-        </div>
+        <input type="text" id="driveUrl" 
+               placeholder="https://drive.google.com/drive/folders/1LxPSYtpAZLsuwKmu8NT3RSI7pASXyl6h"
+               value="https://drive.google.com/drive/folders/1LxPSYtpAZLsuwKmu8NT3RSI7pASXyl6h">
         
-        <div class="result-box" id="resultSection">
-            <h3>आपकी वेबसाइट तैयार है! 🎉</h3>
-            <div class="link-box">
-                <input type="text" id="websiteLink" readonly>
-                <button onclick="copyLink()" class="btn-copy">कॉपी करें</button>
-            </div>
-            <a id="visitLink" target="_blank" class="btn-visit">वेबसाइट देखें</a>
-        </div>
+        <button onclick="window.location.href='viewer.html'">वेबसाइट देखें</button>
     </div>
-
-    <script src="assets/script.js"></script>
 </body>
 </html>
