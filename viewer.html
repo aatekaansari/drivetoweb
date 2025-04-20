@@ -1,59 +1,54 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Live Website Viewer</title>
+    <title>Drive Website Viewer</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .error { color: red; padding: 15px; border: 1px solid red; }
+        .loading { text-align: center; padding: 50px; }
+    </style>
+</head>
+<body>
+    <div id="content">
+        <div class="loading">कृपया प्रतीक्षा करें...</div>
+    </div>
+
     <script>
-        // URL से फोल्डर ID निकालें
-        const urlParams = new URLSearchParams(window.location.search);
-        const folderId = urlParams.get('folder');
+        // Google Drive फोल्डर ID
+        const folderId = '11uhkoEuQG9m4nrM2W3Xbc3O_w4fs8DCP';
         
-        // HTML फ़ाइल को लोड और रेंडर करने का फंक्शन
+        // प्रॉक्सी सर्वर URL (हमारा नया तरीका)
+        const proxyUrl = `https://gd-proxy.herokuapp.com/?folder=${folderId}`;
+        
+        // वेबसाइट लोड करें
         async function loadWebsite() {
             try {
-                // 1. पहले फोल्डर से index.html ढूंढें
-                const fileListResponse = await fetch(
-                    `https://drive.google.com/embeddedfolderview?id=${folderId}`
-                );
-                const fileListHtml = await fileListResponse.text();
+                const response = await fetch(proxyUrl);
+                if (!response.ok) throw new Error('सर्वर से प्रतिक्रिया नहीं मिली');
                 
-                // 2. index.html का लिंक पार्स करें
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(fileListHtml, 'text/html');
-                const indexLink = Array.from(doc.querySelectorAll('a[href*="index.html"]'))[0]?.href;
-                
-                if (!indexLink) throw new Error("index.html फ़ाइल नहीं मिली");
-                
-                // 3. HTML कंटेंट लोड करें
-                const htmlResponse = await fetch(indexLink);
-                const htmlContent = await htmlResponse.text();
-                
-                // 4. पेज में इंजेक्ट करें
-                document.open();
-                document.write(htmlContent);
-                document.close();
-                
+                const html = await response.text();
+                document.getElementById('content').innerHTML = html;
             } catch (error) {
-                document.body.innerHTML = `
-                    <div style="padding:20px;color:red;">
-                        <h2>त्रुटि: ${error.message}</h2>
-                        <p>सुनिश्चित करें कि:</p>
-                        <ul>
-                            <li>फोल्डर में index.html फ़ाइल मौजूद है</li>
-                            <li>फोल्डर की शेयरिंग सेटिंग "Anyone with the link" पर है</li>
-                        </ul>
-                    </div>
-                `;
+                showError(`त्रुटि: ${error.message}`);
             }
+        }
+        
+        function showError(message) {
+            document.getElementById('content').innerHTML = `
+                <div class="error">
+                    <h3>${message}</h3>
+                    <p>कृपया जांचें:</p>
+                    <ul>
+                        <li>फोल्डर में index.html फ़ाइल मौजूद है</li>
+                        <li>फोल्डर की शेयरिंग "Anyone with the link" पर सेट है</li>
+                        <li>आप इंटरनेट से कनेक्टेड हैं</li>
+                    </ul>
+                </div>
+            `;
         }
         
         // पेज लोड होते ही चलाएं
         window.onload = loadWebsite;
     </script>
-</head>
-<body>
-    <!-- यहाँ HTML कंटेंट लोड होगा -->
-    <div style="text-align:center;padding:50px;">
-        <h3>लोड हो रहा है...</h3>
-    </div>
 </body>
 </html>
